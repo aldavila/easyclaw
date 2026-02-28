@@ -5,6 +5,7 @@ export const users = pgTable("users", {
   email: text("email").unique().notNull(),
   name: text("name"),
   image: text("image"),
+  passwordHash: text("password_hash"),
   googleId: text("google_id").unique(),
   stripeCustomerId: text("stripe_customer_id").unique(),
   stripeSubscriptionId: text("stripe_subscription_id"),
@@ -65,4 +66,5 @@ export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 export type Instance = typeof instances.$inferSelect;
 export type NewInstance = typeof instances.$inferInsert;
+export type ProvisionLog = typeof provisionLogs.$inferSelect;
 export type Template = typeof templates.$inferSelect;
