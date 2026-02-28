@@ -21,7 +21,7 @@ export const PLANS = {
     name: "Starter",
     priceId: process.env.STRIPE_STARTER_PRICE_ID || "price_starter",
     price: 8,
-    channels: 1,
+    channels: 1, // Telegram only
     instances: 1,
     cronJobs: 3,
     skills: 0,
@@ -30,7 +30,7 @@ export const PLANS = {
     name: "Pro",
     priceId: process.env.STRIPE_PRO_PRICE_ID || "price_pro",
     price: 18,
-    channels: 3,
+    channels: 2, // Telegram + Discord
     instances: 1,
     cronJobs: 10,
     skills: 5,
@@ -39,7 +39,7 @@ export const PLANS = {
     name: "Business",
     priceId: process.env.STRIPE_BUSINESS_PRICE_ID || "price_business",
     price: 38,
-    channels: -1,
+    channels: 3, // Telegram + Discord + WhatsApp
     instances: 3,
     cronJobs: -1,
     skills: -1,

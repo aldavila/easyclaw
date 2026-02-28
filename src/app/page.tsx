@@ -6,15 +6,15 @@ import Link from "next/link";
 const PLANS = [
   {
     name: "Starter", price: 8, popular: false, cta: "Get Started",
-    features: ["1 messaging channel", "Any AI model (BYOK)", "Basic dashboard", "3 cron jobs", "Community support"],
+    features: ["Telegram channel", "Any AI model (BYOK)", "Basic dashboard", "SOUL.md editor", "3 cron jobs", "Community support"],
   },
   {
     name: "Pro", price: 18, popular: true, cta: "Go Pro",
-    features: ["3 messaging channels", "All AI models (BYOK)", "Full config editor (SOUL.md + AGENTS.md)", "All agent templates", "10 cron jobs", "5 skills/plugins", "Email support"],
+    features: ["Telegram + Discord", "All AI models (BYOK)", "Full SOUL.md + AGENTS.md editor", "All agent templates", "10 cron jobs", "5 skills/plugins", "Email support (48h)"],
   },
   {
     name: "Business", price: 38, popular: false, cta: "Go Business",
-    features: ["Unlimited channels", "3 instances", "Custom domain", "Unlimited cron jobs", "Unlimited skills", "Priority support (24h)"],
+    features: ["Telegram + Discord + WhatsApp", "All AI models (BYOK)", "Full config editor", "All templates + custom", "Unlimited cron jobs", "Unlimited skills", "3 instances", "Custom domain", "Priority support (24h)"],
   },
 ];
 
@@ -62,6 +62,7 @@ export default function Home() {
             <a href="#features" className="hover:text-white transition">Features</a>
             <a href="#pricing" className="hover:text-white transition">Pricing</a>
             <a href="#faq" className="hover:text-white transition">FAQ</a>
+            <Link href="/setup-guide" className="hover:text-white transition">Setup Guide</Link>
           </div>
           <Link href="/api/auth/signin" className="bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-semibold transition">Get Started</Link>
         </div>
@@ -83,7 +84,7 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/api/auth/signin" className="bg-indigo-500 hover:bg-indigo-600 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105 text-center">Deploy Now — From $8/mo</Link>
-            <a href="#features" className="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-8 py-4 rounded-xl text-lg font-semibold transition text-center">See How It Works</a>
+            <Link href="/setup-guide" className="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-8 py-4 rounded-xl text-lg font-semibold transition text-center">See How Easy It Is</Link>
           </div>
           <p className="text-sm text-[var(--muted)] mt-4">BYOK — bring your own API key. You control the model and spend.</p>
         </div>
@@ -127,21 +128,21 @@ export default function Home() {
       {/* Channels */}
       <section className="py-20 px-6 bg-gradient-to-b from-transparent to-indigo-500/5">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Multi-Channel From Day 1</h2>
-          <p className="text-[var(--muted)] mb-12 max-w-xl mx-auto">Unlike competitors that only support Telegram, EasyClaw connects your AI to all your chat apps.</p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Connect Your Favorite Channels</h2>
+          <p className="text-[var(--muted)] mb-12 max-w-xl mx-auto">Start with Telegram in minutes. Add more channels as you grow.</p>
           <div className="flex flex-wrap justify-center gap-4">
             {[
-              { name: "Telegram", icon: "💬", live: true },
-              { name: "Discord", icon: "🎮", live: true },
-              { name: "WhatsApp", icon: "📱", live: false },
-              { name: "Signal", icon: "🔒", live: false },
-              { name: "Slack", icon: "💼", live: false },
+              { name: "Telegram", icon: "💬", status: "✓ All Plans", highlight: true },
+              { name: "Discord", icon: "🎮", status: "Pro & Business", highlight: false },
+              { name: "WhatsApp", icon: "📱", status: "Business (Coming Soon)", highlight: false },
+              { name: "Signal", icon: "🔒", status: "Coming Soon", highlight: false },
+              { name: "Slack", icon: "💼", status: "Coming Soon", highlight: false },
             ].map((c) => (
-              <div key={c.name} className="flex items-center gap-3 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-xl px-6 py-4 min-w-[180px]">
+              <div key={c.name} className={`flex items-center gap-3 bg-[var(--card-bg)] border rounded-xl px-6 py-4 min-w-[180px] ${c.highlight ? "border-indigo-500/50 bg-indigo-500/5" : "border-[var(--card-border)]"}`}>
                 <span className="text-2xl">{c.icon}</span>
                 <div className="text-left">
                   <div className="font-semibold">{c.name}</div>
-                  <div className={`text-xs ${c.live ? "text-green-400" : "text-[var(--muted)]"}`}>{c.live ? "✓ Day 1" : "Coming Soon"}</div>
+                  <div className={`text-xs ${c.highlight ? "text-green-400" : "text-[var(--muted)]"}`}>{c.status}</div>
                 </div>
               </div>
             ))}
@@ -211,9 +212,9 @@ export default function Home() {
               <tbody>
                 {[
                   ["Setup Time", "< 90 seconds", "< 60 seconds", "~60 minutes"],
-                  ["Telegram", "✅", "✅", "✅ (manual)"],
-                  ["Discord", "✅", "❌", "✅ (manual)"],
-                  ["WhatsApp", "🔜 Week 2", "❌", "✅ (manual)"],
+                  ["Telegram", "✅ All plans", "✅", "✅ (manual)"],
+                  ["Discord", "✅ Pro+", "❌", "✅ (manual)"],
+                  ["WhatsApp", "🔜 Business", "❌", "✅ (manual)"],
                   ["Agent Templates", "✅", "❌", "❌"],
                   ["Visual Config Editor", "✅", "❌", "❌"],
                   ["Skills/Plugins", "✅", "❌", "✅ (manual)"],
