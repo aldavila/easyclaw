@@ -20,7 +20,7 @@ export const PLANS = {
   starter: {
     name: "Starter",
     priceId: process.env.STRIPE_STARTER_PRICE_ID || "price_starter",
-    price: 12,
+    price: 8,
     channels: 1,
     instances: 1,
     cronJobs: 3,
@@ -29,7 +29,7 @@ export const PLANS = {
   pro: {
     name: "Pro",
     priceId: process.env.STRIPE_PRO_PRICE_ID || "price_pro",
-    price: 24,
+    price: 18,
     channels: 3,
     instances: 1,
     cronJobs: 10,
@@ -38,7 +38,7 @@ export const PLANS = {
   business: {
     name: "Business",
     priceId: process.env.STRIPE_BUSINESS_PRICE_ID || "price_business",
-    price: 49,
+    price: 38,
     channels: -1,
     instances: 3,
     cronJobs: -1,

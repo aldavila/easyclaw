@@ -1,6 +1,6 @@
 import { db } from "./db";
 import { instances, provisionLogs } from "./db/schema";
-import { createServer } from "./hetzner";
+import { createServer } from "./digitalocean";
 import { eq } from "drizzle-orm";
 
 interface ChannelConfig {
@@ -99,16 +99,16 @@ echo "PROVISION_COMPLETE"
 export async function provisionInstance(instanceId: string) {
   try {
     await logStep(instanceId, "create_server", "running");
-    const { server, root_password } = await createServer(instanceId);
+    const { droplet, rootPassword } = await createServer(instanceId);
 
     await db.update(instances).set({
-      hetznerServerId: server.id,
-      serverIp: server.public_net.ipv4.ip,
+      hetznerServerId: droplet.id,
+      serverIp: droplet.ip,
       status: "provisioning",
       updatedAt: new Date(),
     }).where(eq(instances.id, instanceId));
 
-    await logStep(instanceId, "create_server", "success", `Server ${server.id} at ${server.public_net.ipv4.ip}`);
+    await logStep(instanceId, "create_server", "success", `Server ${droplet.id} at ${droplet.ip}`);
 
     // Wait for server to boot
     await logStep(instanceId, "wait_ssh", "running");
@@ -129,10 +129,10 @@ export async function provisionInstance(instanceId: string) {
       agentsMd: instance.agentsMd || "",
     });
 
-    // TODO: Execute script via SSH (ssh2 library or Hetzner user-data)
+    // TODO: Execute script via SSH (ssh2 library or DigitalOcean user-data)
     // For now, log the script for manual execution
     console.log(`Provision script for ${instanceId}:`, script.slice(0, 200));
-    void root_password; // will be used for SSH auth
+    void rootPassword; // will be used for SSH auth if available
     void script;
 
     await logStep(instanceId, "install_openclaw", "success");

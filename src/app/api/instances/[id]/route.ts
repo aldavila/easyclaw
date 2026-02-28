@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { instances, users, provisionLogs } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { auth } from "@/lib/auth";
-import { deleteServer } from "@/lib/hetzner";
+import { deleteServer } from "@/lib/digitalocean";
 
 async function getAuthUser() {
   const session = await auth();
@@ -52,7 +52,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   if (!instance) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   if (instance.hetznerServerId) {
-    try { await deleteServer(instance.hetznerServerId); } catch (e) { console.error("Hetzner delete failed:", e); }
+    try { await deleteServer(instance.hetznerServerId); } catch (e) { console.error("DigitalOcean delete failed:", e); }
   }
   await db.delete(provisionLogs).where(eq(provisionLogs.instanceId, id));
   await db.delete(instances).where(eq(instances.id, id));

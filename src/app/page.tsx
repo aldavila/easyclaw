@@ -5,16 +5,16 @@ import Link from "next/link";
 
 const PLANS = [
   {
-    name: "Starter", price: 12, popular: false, cta: "Get Started",
-    features: ["1 messaging channel", "Any AI model (BYOK)", "Basic SOUL.md editor", "3 agent templates", "3 cron jobs", "Community support"],
+    name: "Starter", price: 8, popular: false, cta: "Get Started",
+    features: ["1 messaging channel", "Any AI model (BYOK)", "Basic dashboard", "3 cron jobs", "Community support"],
   },
   {
-    name: "Pro", price: 24, popular: true, cta: "Go Pro",
-    features: ["3 messaging channels", "All AI models (BYOK)", "Full SOUL.md + AGENTS.md editor", "All agent templates", "10 cron jobs", "5 skills/plugins", "Email support (48h)"],
+    name: "Pro", price: 18, popular: true, cta: "Go Pro",
+    features: ["3 messaging channels", "All AI models (BYOK)", "Full config editor (SOUL.md + AGENTS.md)", "All agent templates", "10 cron jobs", "5 skills/plugins", "Email support"],
   },
   {
-    name: "Business", price: 49, popular: false, cta: "Go Business",
-    features: ["Unlimited channels", "All AI models (BYOK)", "Full config editor", "All templates + custom", "Unlimited cron jobs", "Unlimited skills", "3 instances", "Custom domain", "Priority support (24h)"],
+    name: "Business", price: 38, popular: false, cta: "Go Business",
+    features: ["Unlimited channels", "3 instances", "Custom domain", "Unlimited cron jobs", "Unlimited skills", "Priority support (24h)"],
   },
 ];
 
@@ -82,7 +82,7 @@ export default function Home() {
             One-click OpenClaw deployment. No servers, no SSH, no CLI. Get a personal AI assistant running 24/7 on Telegram, Discord, and WhatsApp.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/api/auth/signin" className="bg-indigo-500 hover:bg-indigo-600 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105 text-center">Deploy Now — From $12/mo</Link>
+            <Link href="/api/auth/signin" className="bg-indigo-500 hover:bg-indigo-600 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105 text-center">Deploy Now — From $8/mo</Link>
             <a href="#features" className="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-8 py-4 rounded-xl text-lg font-semibold transition text-center">See How It Works</a>
           </div>
           <p className="text-sm text-[var(--muted)] mt-4">BYOK — bring your own API key. You control the model and spend.</p>
@@ -219,7 +219,7 @@ export default function Home() {
                   ["Skills/Plugins", "✅", "❌", "✅ (manual)"],
                   ["Auto-Recovery", "✅", "❓", "❌ (DIY)"],
                   ["Dashboard", "✅", "Basic", "❌"],
-                  ["Starting Price", "$12/mo", "~$20/mo", "$4/mo + time"],
+                  ["Starting Price", "$8/mo", "~$20/mo", "$4/mo + time"],
                 ].map(([feature, easy, simple, diy]) => (
                   <tr key={feature} className="border-b border-[var(--card-border)]/50">
                     <td className="py-3 pr-4 font-medium">{feature}</td>
@@ -247,7 +247,7 @@ export default function Home() {
         <div className="max-w-3xl mx-auto text-center bg-gradient-to-r from-indigo-500/10 to-cyan-500/10 border border-indigo-500/30 rounded-3xl p-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Deploy Your AI Assistant?</h2>
           <p className="text-[var(--muted)] mb-8 max-w-lg mx-auto">Join the OpenClaw revolution. Deploy in 60 seconds. No technical knowledge required.</p>
-          <Link href="/api/auth/signin" className="inline-block bg-indigo-500 hover:bg-indigo-600 text-white px-10 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105">Get Started Now — From $12/mo</Link>
+          <Link href="/api/auth/signin" className="inline-block bg-indigo-500 hover:bg-indigo-600 text-white px-10 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105">Get Started Now — From $8/mo</Link>
         </div>
       </section>
 
