@@ -52,7 +52,7 @@ async function waitForIp(dropletId: number, maxAttempts = 30): Promise<string> {
   throw new Error(`Droplet ${dropletId} did not receive public IP after ${maxAttempts * 2} seconds`);
 }
 
-export async function createServer(instanceId: string): Promise<CreateDropletResponse> {
+export async function createServer(instanceId: string, userData?: string): Promise<CreateDropletResponse> {
   const sshKeys: string[] = [];
   if (process.env.DO_SSH_KEY_ID) {
     sshKeys.push(process.env.DO_SSH_KEY_ID);
@@ -67,7 +67,7 @@ export async function createServer(instanceId: string): Promise<CreateDropletRes
       image: "ubuntu-24-04-x64",
       ssh_keys: sshKeys,
       tags: ["easyclaw"],
-      // user_data can be added for cloud-init script
+      user_data: userData || "",
     }),
   });
 
@@ -81,8 +81,6 @@ export async function createServer(instanceId: string): Promise<CreateDropletRes
       id: dropletId,
       ip,
     },
-    // DigitalOcean doesn't return root password by default (uses SSH keys)
-    // If needed, can be set via user_data cloud-init
   };
 }
 

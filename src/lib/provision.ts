@@ -1,6 +1,6 @@
 import { db } from "./db";
 import { instances, provisionLogs } from "./db/schema";
-import { createServer } from "./digitalocean";
+import { createServer, getServer } from "./digitalocean";
 import { eq } from "drizzle-orm";
 
 interface ChannelConfig {
@@ -98,29 +98,11 @@ echo "PROVISION_COMPLETE"
 
 export async function provisionInstance(instanceId: string) {
   try {
-    await logStep(instanceId, "create_server", "running");
-    const { droplet, rootPassword } = await createServer(instanceId);
-
-    await db.update(instances).set({
-      hetznerServerId: droplet.id,
-      serverIp: droplet.ip,
-      status: "provisioning",
-      updatedAt: new Date(),
-    }).where(eq(instances.id, instanceId));
-
-    await logStep(instanceId, "create_server", "success", `Server ${droplet.id} at ${droplet.ip}`);
-
-    // Wait for server to boot
-    await logStep(instanceId, "wait_ssh", "running");
-    await new Promise(r => setTimeout(r, 30000)); // 30s boot time
-    await logStep(instanceId, "wait_ssh", "success");
-
-    // Get instance config
+    // Get instance config FIRST (need it for script generation)
     const [instance] = await db.select().from(instances).where(eq(instances.id, instanceId));
     if (!instance) throw new Error("Instance not found");
 
-    await logStep(instanceId, "install_openclaw", "running");
-
+    // Generate the provision script
     const script = generateProvisionScript({
       model: instance.model || "anthropic/claude-sonnet-4-20250514",
       apiKey: instance.apiKeyEncrypted || "",
@@ -129,12 +111,47 @@ export async function provisionInstance(instanceId: string) {
       agentsMd: instance.agentsMd || "",
     });
 
-    // TODO: Execute script via SSH (ssh2 library or DigitalOcean user-data)
-    // For now, log the script for manual execution
-    console.log(`Provision script for ${instanceId}:`, script.slice(0, 200));
-    void rootPassword; // will be used for SSH auth if available
-    void script;
+    // Create server WITH user_data (cloud-init runs the script on first boot)
+    await logStep(instanceId, "create_server", "running");
+    const { droplet } = await createServer(instanceId, script);
 
+    await db.update(instances).set({
+      hetznerServerId: droplet.id,
+      serverIp: droplet.ip || null,
+      status: "provisioning",
+      updatedAt: new Date(),
+    }).where(eq(instances.id, instanceId));
+
+    await logStep(instanceId, "create_server", "success", `Droplet ${droplet.id} created`);
+
+    // If we don't have IP yet, poll for it
+    if (!droplet.ip) {
+      await logStep(instanceId, "wait_ip", "running");
+      let ip = null;
+      for (let i = 0; i < 30; i++) {
+        await new Promise(r => setTimeout(r, 10000)); // wait 10s
+        try {
+          const server = await getServer(droplet.id);
+          // Check for public IPv4
+          const v4 = server.networks?.v4?.find((n: { type: string; ip_address: string }) => n.type === "public");
+          if (v4?.ip_address) {
+            ip = v4.ip_address;
+            break;
+          }
+        } catch { /* continue polling */ }
+      }
+      if (ip) {
+        await db.update(instances).set({ serverIp: ip, updatedAt: new Date() }).where(eq(instances.id, instanceId));
+        await logStep(instanceId, "wait_ip", "success", `IP: ${ip}`);
+      }
+    }
+
+    // Cloud-init handles installation. Mark as provisioning
+    await logStep(instanceId, "install_openclaw", "running", "Cloud-init installing OpenClaw (2-3 minutes)...");
+    
+    // Wait ~3 minutes for cloud-init to complete
+    await new Promise(r => setTimeout(r, 180000));
+    
     await logStep(instanceId, "install_openclaw", "success");
     await logStep(instanceId, "start", "success");
 
