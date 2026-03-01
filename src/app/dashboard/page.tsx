@@ -130,17 +130,9 @@ function NewInstanceForm({ onCreated }: { onCreated: () => void }) {
       {step === 3 && (
         <div className="space-y-4">
           <div><label className="block text-sm text-[#888] mb-2">Channel</label>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { type: "telegram", icon: "💬", label: "Telegram", desc: "Recommended" },
-                { type: "discord", icon: "🎮", label: "Discord", desc: "Pro plan" }
-              ].map(ch => (
-                <button key={ch.type} onClick={() => { setChannelType(ch.type); setShowInstructions(true); }} className={`p-4 rounded-lg border text-left transition ${channelType === ch.type ? "border-indigo-500 bg-indigo-500/10" : "border-[#1e1e1e] bg-black/30 hover:border-white/20"}`}>
-                  <span className="text-2xl">{ch.icon}</span>
-                  <div className="mt-1 font-medium text-sm">{ch.label}</div>
-                  <div className="text-xs text-[#666]">{ch.desc}</div>
-                </button>
-              ))}
+            <div className="p-4 rounded-lg border border-indigo-500 bg-indigo-500/10 flex items-center gap-3">
+              <span className="text-2xl">💬</span>
+              <div><div className="font-medium text-sm">Telegram</div><div className="text-xs text-[#888]">More channels coming soon</div></div>
             </div>
           </div>
           
@@ -151,39 +143,26 @@ function NewInstanceForm({ onCreated }: { onCreated: () => void }) {
               className="w-full p-3 flex items-center justify-between text-left hover:bg-white/5 transition"
             >
               <span className="text-sm font-medium text-indigo-400">
-                {channelType === "telegram" ? "📖 How to get your Telegram bot token (2 min)" : "📖 How to get your Discord bot token (5 min)"}
+                {"📖 How to get your Telegram bot token (2 min)"}
               </span>
               <span className="text-[#888]">{showInstructions ? "▼" : "▶"}</span>
             </button>
             {showInstructions && (
               <div className="px-4 pb-4 text-sm text-[#aaa] space-y-2">
-                {channelType === "telegram" ? (
-                  <>
-                    <div className="flex gap-2"><span className="text-indigo-400 font-bold">1.</span><span>Open Telegram and search for <strong className="text-white">@BotFather</strong></span></div>
-                    <div className="flex gap-2"><span className="text-indigo-400 font-bold">2.</span><span>Send <code className="bg-black/50 px-1.5 py-0.5 rounded text-xs">/newbot</code></span></div>
-                    <div className="flex gap-2"><span className="text-indigo-400 font-bold">3.</span><span>Choose a name for your bot (e.g., &quot;My AI Assistant&quot;)</span></div>
-                    <div className="flex gap-2"><span className="text-indigo-400 font-bold">4.</span><span>Choose a username ending in &quot;bot&quot; (e.g., &quot;myai_assistant_bot&quot;)</span></div>
-                    <div className="flex gap-2"><span className="text-indigo-400 font-bold">5.</span><span>BotFather gives you a token — <strong className="text-white">paste it below</strong></span></div>
-                  </>
-                ) : (
-                  <>
-                    <div className="flex gap-2"><span className="text-indigo-400 font-bold">1.</span><span>Go to <strong className="text-white">discord.com/developers/applications</strong></span></div>
-                    <div className="flex gap-2"><span className="text-indigo-400 font-bold">2.</span><span>Click &quot;New Application&quot; → name it → Create</span></div>
-                    <div className="flex gap-2"><span className="text-indigo-400 font-bold">3.</span><span>Go to &quot;Bot&quot; in sidebar → click &quot;Reset Token&quot; → Copy it</span></div>
-                    <div className="flex gap-2"><span className="text-indigo-400 font-bold">4.</span><span>Enable &quot;Message Content Intent&quot; under Privileged Gateway Intents</span></div>
-                    <div className="flex gap-2"><span className="text-indigo-400 font-bold">5.</span><span>Go to OAuth2 → URL Generator → select &quot;bot&quot; scope</span></div>
-                    <div className="flex gap-2"><span className="text-indigo-400 font-bold">6.</span><span>Select &quot;Send Messages&quot; + &quot;Read Message History&quot; permissions</span></div>
-                    <div className="flex gap-2"><span className="text-indigo-400 font-bold">7.</span><span>Copy the generated URL → open it to invite bot to your server</span></div>
-                    <div className="flex gap-2"><span className="text-indigo-400 font-bold">8.</span><span><strong className="text-white">Paste the bot token below</strong></span></div>
-                  </>
-                )}
+                <>
+                  <div className="flex gap-2"><span className="text-indigo-400 font-bold">1.</span><span>Open Telegram and search for <strong className="text-white">@BotFather</strong></span></div>
+                  <div className="flex gap-2"><span className="text-indigo-400 font-bold">2.</span><span>Send <code className="bg-black/50 px-1.5 py-0.5 rounded text-xs">/newbot</code></span></div>
+                  <div className="flex gap-2"><span className="text-indigo-400 font-bold">3.</span><span>Choose a name for your bot (e.g., &quot;My AI Assistant&quot;)</span></div>
+                  <div className="flex gap-2"><span className="text-indigo-400 font-bold">4.</span><span>Choose a username ending in &quot;bot&quot; (e.g., &quot;myai_assistant_bot&quot;)</span></div>
+                  <div className="flex gap-2"><span className="text-indigo-400 font-bold">5.</span><span>BotFather gives you a token — <strong className="text-white">paste it below</strong></span></div>
+                </>
               </div>
             )}
           </div>
 
           <div>
-            <label className="block text-sm text-[#888] mb-2">{channelType === "telegram" ? "Telegram Bot Token" : "Discord Bot Token"}</label>
-            <input type="password" value={botToken} onChange={e => setBotToken(e.target.value)} className="w-full bg-black/50 border border-[#1e1e1e] rounded-lg p-3 text-white font-mono focus:outline-none focus:border-indigo-500" placeholder={channelType === "telegram" ? "123456:ABC-DEF..." : "MTIz..."} />
+            <label className="block text-sm text-[#888] mb-2">Telegram Bot Token</label>
+            <input type="password" value={botToken} onChange={e => setBotToken(e.target.value)} className="w-full bg-black/50 border border-[#1e1e1e] rounded-lg p-3 text-white font-mono focus:outline-none focus:border-indigo-500" placeholder="123456:ABC-DEF..." />
           </div>
           {error && <p className="text-red-400 text-sm bg-red-500/10 border border-red-500/30 rounded-lg p-3">{error}</p>}
           <div className="flex gap-3">

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe, PLANS, PlanKey } from "@/lib/stripe";
+import { stripe, PLAN } from "@/lib/stripe";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
@@ -10,10 +10,6 @@ export async function POST(req: NextRequest) {
     const session = await auth();
     if (!session?.user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const { plan } = await req.json();
-    if (!plan || !PLANS[plan as PlanKey]) return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
-
-    const planConfig = PLANS[plan as PlanKey];
     const [user] = await db.select().from(users).where(eq(users.email, session.user.email));
     if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
 
@@ -26,10 +22,10 @@ export async function POST(req: NextRequest) {
 
     const checkoutSession = await stripe.checkout.sessions.create({
       customer: customerId, mode: "subscription", payment_method_types: ["card"],
-      line_items: [{ price: planConfig.priceId, quantity: 1 }],
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/#pricing`,
-      metadata: { userId: user.id, plan },
+      line_items: [{ price: PLAN.priceId, quantity: 1 }],
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL}/#pricing`,
+      metadata: { userId: user.id, plan: "easyclaw" },
     });
 
     return NextResponse.json({ url: checkoutSession.url });

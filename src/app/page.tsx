@@ -3,34 +3,28 @@
 import { useState } from "react";
 import Link from "next/link";
 
-const PLANS = [
-  {
-    name: "Starter", price: 8, popular: false, cta: "Get Started",
-    features: ["1 messaging channel", "Any AI model (BYOK)", "Basic dashboard", "3 cron jobs", "Community support"],
-  },
-  {
-    name: "Pro", price: 18, popular: true, cta: "Go Pro",
-    features: ["3 messaging channels", "All AI models (BYOK)", "Full config editor (SOUL.md + AGENTS.md)", "All agent templates", "10 cron jobs", "5 skills/plugins", "Email support"],
-  },
-  {
-    name: "Business", price: 38, popular: false, cta: "Go Business",
-    features: ["Unlimited channels", "3 instances", "Custom domain", "Unlimited cron jobs", "Unlimited skills", "Priority support (24h)"],
-  },
+const STEPS = [
+  { step: "1", title: "Sign Up", desc: "Create your account with Google or email. Takes 10 seconds.", icon: "🔑" },
+  { step: "2", title: "Configure", desc: "Pick your AI model, paste your API key, connect Telegram.", icon: "⚙️" },
+  { step: "3", title: "Deploy", desc: "We provision your server and start OpenClaw. Under 90 seconds.", icon: "🚀" },
+  { step: "4", title: "Chat", desc: "Your AI assistant is live. Message it on Telegram 24/7.", icon: "💬" },
 ];
 
-const STEPS = [
-  { step: "1", title: "Sign Up", desc: "Create your account with Google. Takes 10 seconds.", icon: "🔑" },
-  { step: "2", title: "Configure", desc: "Pick your AI model, paste your API key, connect a channel.", icon: "⚙️" },
-  { step: "3", title: "Deploy", desc: "We provision your server and start OpenClaw. Under 90 seconds.", icon: "🚀" },
-  { step: "4", title: "Chat", desc: "Your AI assistant is live. Message it on Telegram, Discord, or WhatsApp.", icon: "💬" },
+const FEATURES = [
+  { icon: "🧠", title: "Custom Personality", desc: "Define your agent's personality, tone, and behavior with SOUL.md. Visual editor included." },
+  { icon: "💬", title: "Telegram Integration", desc: "Your AI lives in Telegram. Chat with it like a friend, get reminders, automate tasks." },
+  { icon: "🔧", title: "Skills & Plugins", desc: "Install pre-built skills for YouTube, GitHub, marketing, and more. Or build your own." },
+  { icon: "⏰", title: "Cron & Automation", desc: "Schedule recurring tasks, reminders, and automated workflows. Your agent works while you sleep." },
+  { icon: "📊", title: "Dashboard", desc: "Monitor your instance, view logs, restart, and manage everything from one clean interface." },
+  { icon: "🔐", title: "Fully Isolated", desc: "Each user gets their own server. No shared resources, no data mixing. Your data stays yours." },
 ];
 
 const FAQS = [
   { q: "What is OpenClaw?", a: "OpenClaw is the most popular open-source AI agent platform with 100K+ GitHub stars. It lets you run a personal AI assistant that connects to your messaging apps and works 24/7." },
-  { q: "Do I need my own API key?", a: "Yes. EasyClaw uses BYOK (Bring Your Own Key). You provide an API key from Anthropic (Claude), OpenAI (GPT), or Google (Gemini). This keeps prices low and gives you full control." },
-  { q: "How is this different from SimpleClaw?", a: "SimpleClaw only supports Telegram. EasyClaw launches with Telegram AND Discord from day 1, with WhatsApp coming soon. We also offer agent templates, a visual config editor, and skill plugins." },
+  { q: "Do I need my own API key?", a: "Yes. EasyClaw uses BYOK (Bring Your Own Key). You provide an API key from Anthropic (Claude), OpenAI (GPT), or Google (Gemini). This keeps prices low and gives you full control over your AI spend." },
+  { q: "Which messaging apps are supported?", a: "Telegram is fully supported today. Discord, WhatsApp, and more channels are on the roadmap and coming soon." },
   { q: "Can I use Claude, GPT, or Gemini?", a: "Yes. OpenClaw supports all major AI models. Pick your model and provide your own API key. Switch models anytime from your dashboard." },
-  { q: "What happens if my instance goes down?", a: "We monitor every instance and auto-restart on crashes. Pro and Business plans include email/priority support. We target 99.5% uptime." },
+  { q: "What happens if my instance goes down?", a: "We monitor every instance and auto-restart on crashes. We target 99.5% uptime." },
   { q: "Can I customize my AI's personality?", a: "Absolutely. OpenClaw uses a SOUL.md file to define your agent's personality, tone, and behavior. Our dashboard includes a visual editor." },
   { q: "Can I cancel anytime?", a: "Yes. No contracts, no commitments. Cancel from your dashboard and your instance runs until the end of your billing period." },
 ];
@@ -79,10 +73,10 @@ export default function Home() {
             <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">in 60 Seconds</span>
           </h1>
           <p className="text-xl text-[var(--muted)] max-w-2xl mx-auto mb-10 leading-relaxed">
-            One-click OpenClaw deployment. No servers, no SSH, no CLI. Get a personal AI assistant running 24/7 on Telegram, Discord, and WhatsApp.
+            One-click OpenClaw deployment. No servers, no SSH, no CLI. Get a personal AI assistant running 24/7 on Telegram.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/api/auth/signin" className="bg-indigo-500 hover:bg-indigo-600 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105 text-center">Deploy Now — From $8/mo</Link>
+            <Link href="/api/auth/signin" className="bg-indigo-500 hover:bg-indigo-600 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105 text-center">Deploy Now — $24/mo</Link>
             <a href="#features" className="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-8 py-4 rounded-xl text-lg font-semibold transition text-center">See How It Works</a>
           </div>
           <p className="text-sm text-[var(--muted)] mt-4">BYOK — bring your own API key. You control the model and spend.</p>
@@ -95,7 +89,7 @@ export default function Home() {
           {[
             ["100K+", "OpenClaw GitHub Stars"],
             ["<90s", "Deploy Time"],
-            ["3+", "Chat Channels"],
+            ["24/7", "Always On"],
             ["99.5%", "Uptime"],
           ].map(([val, label]) => (
             <div key={label}>
@@ -127,12 +121,12 @@ export default function Home() {
       {/* Channels */}
       <section className="py-20 px-6 bg-gradient-to-b from-transparent to-indigo-500/5">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Multi-Channel From Day 1</h2>
-          <p className="text-[var(--muted)] mb-12 max-w-xl mx-auto">Unlike competitors that only support Telegram, EasyClaw connects your AI to all your chat apps.</p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Live on Telegram</h2>
+          <p className="text-[var(--muted)] mb-12 max-w-xl mx-auto">Your AI assistant lives in Telegram. Chat with it like a friend. More channels coming soon.</p>
           <div className="flex flex-wrap justify-center gap-4">
             {[
               { name: "Telegram", icon: "💬", live: true },
-              { name: "Discord", icon: "🎮", live: true },
+              { name: "Discord", icon: "🎮", live: false },
               { name: "WhatsApp", icon: "📱", live: false },
               { name: "Signal", icon: "🔒", live: false },
               { name: "Slack", icon: "💼", live: false },
@@ -141,7 +135,7 @@ export default function Home() {
                 <span className="text-2xl">{c.icon}</span>
                 <div className="text-left">
                   <div className="font-semibold">{c.name}</div>
-                  <div className={`text-xs ${c.live ? "text-green-400" : "text-[var(--muted)]"}`}>{c.live ? "✓ Day 1" : "Coming Soon"}</div>
+                  <div className={`text-xs ${c.live ? "text-green-400" : "text-[var(--muted)]"}`}>{c.live ? "✓ Available" : "Coming Soon"}</div>
                 </div>
               </div>
             ))}
@@ -154,14 +148,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">Everything You Need</h2>
           <div className="grid md:grid-cols-3 gap-6">
-            {[
-              { icon: "🧠", title: "Custom Personality", desc: "Define your agent's personality, tone, and behavior with SOUL.md. Visual editor included." },
-              { icon: "🔧", title: "Skills & Plugins", desc: "Install pre-built skills for YouTube, GitHub, marketing, and more. Or build your own." },
-              { icon: "⏰", title: "Cron & Automation", desc: "Schedule recurring tasks, reminders, and automated workflows. Your agent works while you sleep." },
-              { icon: "📊", title: "Dashboard", desc: "Monitor your instance, view logs, restart, and manage everything from one clean interface." },
-              { icon: "🔐", title: "Fully Isolated", desc: "Each user gets their own server. No shared resources, no data mixing. Your data stays yours." },
-              { icon: "🔄", title: "Auto-Recovery", desc: "We monitor every instance and auto-restart on crashes. 99.5% uptime target." },
-            ].map((f) => (
+            {FEATURES.map((f) => (
               <div key={f.title} className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl p-6">
                 <span className="text-3xl mb-4 block">{f.icon}</span>
                 <h3 className="text-lg font-bold mb-2">{f.title}</h3>
@@ -174,23 +161,32 @@ export default function Home() {
 
       {/* Pricing */}
       <section className="py-20 px-6" id="pricing">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Simple, Transparent Pricing</h2>
-          <p className="text-[var(--muted)] text-center mb-16 max-w-xl mx-auto">No hidden fees. No per-message charges. You bring your AI model key, we handle everything else.</p>
-          <div className="grid md:grid-cols-3 gap-6 items-start">
-            {PLANS.map((p) => (
-              <div key={p.name} className={`relative rounded-2xl p-8 flex flex-col ${p.popular ? "bg-gradient-to-b from-indigo-500/10 to-cyan-500/10 border-2 border-indigo-500/50 scale-105" : "bg-[var(--card-bg)] border border-[var(--card-border)]"}`}>
-                {p.popular && <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-500 text-white text-xs font-bold px-4 py-1 rounded-full">MOST POPULAR</span>}
-                <h3 className="text-xl font-bold mb-2">{p.name}</h3>
-                <div className="mb-6"><span className="text-4xl font-bold">${p.price}</span><span className="text-[var(--muted)]">/month</span></div>
-                <ul className="space-y-3 mb-8 flex-1">
-                  {p.features.map((f) => <li key={f} className="flex items-start gap-2 text-sm"><span className="text-green-400 mt-0.5">✓</span><span>{f}</span></li>)}
-                </ul>
-                <Link href="/api/auth/signin" className={`w-full py-3 rounded-xl font-semibold transition-all text-center block ${p.popular ? "bg-indigo-500 hover:bg-indigo-600 text-white" : "bg-white/10 hover:bg-white/20 text-white"}`}>{p.cta}</Link>
-              </div>
-            ))}
+        <div className="max-w-lg mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Simple Pricing</h2>
+          <p className="text-[var(--muted)] mb-12">No tiers. No hidden fees. One plan, everything included.</p>
+          <div className="bg-gradient-to-b from-indigo-500/10 to-cyan-500/10 border-2 border-indigo-500/50 rounded-2xl p-10">
+            <h3 className="text-2xl font-bold mb-2">EasyClaw</h3>
+            <div className="mb-8"><span className="text-5xl font-bold">$24</span><span className="text-[var(--muted)]">/month</span></div>
+            <ul className="space-y-4 mb-10 text-left max-w-xs mx-auto">
+              {[
+                "Telegram channel",
+                "Any AI model (BYOK)",
+                "Your own isolated server",
+                "Custom personality (SOUL.md editor)",
+                "Skills & plugins",
+                "Cron jobs & automation",
+                "Full dashboard",
+                "Auto-recovery & monitoring",
+              ].map((f) => (
+                <li key={f} className="flex items-start gap-3 text-sm">
+                  <span className="text-green-400 mt-0.5">✓</span>
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+            <Link href="/api/auth/signin" className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-4 rounded-xl font-semibold transition-all hover:scale-105 text-center block text-lg">Get Started</Link>
+            <p className="text-xs text-[var(--muted)] mt-4">LLM API costs are separate (you use your own key). Cancel anytime.</p>
           </div>
-          <p className="text-center text-sm text-[var(--muted)] mt-8">All plans include your own isolated server. LLM API costs are separate (you use your own key).</p>
         </div>
       </section>
 
@@ -212,14 +208,12 @@ export default function Home() {
                 {[
                   ["Setup Time", "< 90 seconds", "< 60 seconds", "~60 minutes"],
                   ["Telegram", "✅", "✅", "✅ (manual)"],
-                  ["Discord", "✅", "❌", "✅ (manual)"],
-                  ["WhatsApp", "🔜 Week 2", "❌", "✅ (manual)"],
                   ["Agent Templates", "✅", "❌", "❌"],
                   ["Visual Config Editor", "✅", "❌", "❌"],
                   ["Skills/Plugins", "✅", "❌", "✅ (manual)"],
                   ["Auto-Recovery", "✅", "❓", "❌ (DIY)"],
                   ["Dashboard", "✅", "Basic", "❌"],
-                  ["Starting Price", "$8/mo", "~$20/mo", "$4/mo + time"],
+                  ["Price", "$24/mo", "~$20/mo", "$4/mo + time"],
                 ].map(([feature, easy, simple, diy]) => (
                   <tr key={feature} className="border-b border-[var(--card-border)]/50">
                     <td className="py-3 pr-4 font-medium">{feature}</td>
@@ -247,7 +241,7 @@ export default function Home() {
         <div className="max-w-3xl mx-auto text-center bg-gradient-to-r from-indigo-500/10 to-cyan-500/10 border border-indigo-500/30 rounded-3xl p-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Deploy Your AI Assistant?</h2>
           <p className="text-[var(--muted)] mb-8 max-w-lg mx-auto">Join the OpenClaw revolution. Deploy in 60 seconds. No technical knowledge required.</p>
-          <Link href="/api/auth/signin" className="inline-block bg-indigo-500 hover:bg-indigo-600 text-white px-10 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105">Get Started Now — From $8/mo</Link>
+          <Link href="/api/auth/signin" className="inline-block bg-indigo-500 hover:bg-indigo-600 text-white px-10 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105">Get Started — $24/mo</Link>
         </div>
       </section>
 

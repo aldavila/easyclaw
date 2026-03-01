@@ -16,34 +16,19 @@ export const stripe = new Proxy({} as any, {
   },
 }) as Stripe;
 
+export const PLAN = {
+  name: "EasyClaw",
+  priceId: process.env.STRIPE_PRICE_ID || "price_1T60F6GAvY8PdD9WDaMco97b",
+  price: 24,
+  channels: 1, // Telegram
+  instances: 1,
+  cronJobs: 10,
+  skills: 5,
+} as const;
+
+// Keep PLANS export for backward compat with checkout route
 export const PLANS = {
-  starter: {
-    name: "Starter",
-    priceId: process.env.STRIPE_STARTER_PRICE_ID || "price_starter",
-    price: 8,
-    channels: 1, // Telegram only
-    instances: 1,
-    cronJobs: 3,
-    skills: 0,
-  },
-  pro: {
-    name: "Pro",
-    priceId: process.env.STRIPE_PRO_PRICE_ID || "price_pro",
-    price: 18,
-    channels: 2, // Telegram + Discord
-    instances: 1,
-    cronJobs: 10,
-    skills: 5,
-  },
-  business: {
-    name: "Business",
-    priceId: process.env.STRIPE_BUSINESS_PRICE_ID || "price_business",
-    price: 38,
-    channels: 3, // Telegram + Discord + WhatsApp
-    instances: 3,
-    cronJobs: -1,
-    skills: -1,
-  },
+  easyclaw: PLAN,
 } as const;
 
 export type PlanKey = keyof typeof PLANS;

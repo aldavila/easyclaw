@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
   if (!user || user.planStatus !== "active") return NextResponse.json({ error: "Active subscription required" }, { status: 403 });
 
   const existing = await db.select().from(instances).where(eq(instances.userId, user.id));
-  const maxInstances = user.plan === "business" ? 3 : 1;
+  const maxInstances = 1;
   if (existing.length >= maxInstances) return NextResponse.json({ error: `Limit reached (${maxInstances})` }, { status: 403 });
 
   const { model, apiKey, channels, name, soulMd, agentsMd } = await req.json();
