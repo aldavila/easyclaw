@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { trackEvent } from "@/lib/posthog";
 
 interface Instance {
   id: string;
@@ -87,6 +88,7 @@ function NewInstanceForm({ onCreated }: { onCreated: () => void }) {
     try {
       const res = await fetch("/api/instances", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, model, apiKey, channels: [{ type: channelType, config: { botToken } }] }) });
       if (!res.ok) { const d = await res.json(); throw new Error(d.error || "Failed"); }
+      trackEvent("instance_deployed", { model, channel: channelType });
       onCreated();
     } catch (err) { setError(err instanceof Error ? err.message : "Unknown error"); }
     setCreating(false);
