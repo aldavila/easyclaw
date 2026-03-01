@@ -4,7 +4,7 @@ import { instances, users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { provisionInstance } from "@/lib/provision";
-import { onInstanceDeployed } from "@/lib/loops";
+import { sendInstanceReady } from "@/lib/emails";
 import { notifyDeploy } from "@/lib/notify";
 
 export async function GET() {
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
   provisionInstance(instance.id).catch(err => console.error(`Provision failed for ${instance.id}:`, err));
 
   // Fire-and-forget notifications
-  onInstanceDeployed(session.user.email!, name || "My Agent").catch(() => {});
+  sendInstanceReady(session.user.email!, name || "My Agent").catch(() => {});
   notifyDeploy(session.user.email!, name || "My Agent").catch(() => {});
 
   return NextResponse.json({ instance: { ...instance, apiKeyEncrypted: undefined } }, { status: 201 });

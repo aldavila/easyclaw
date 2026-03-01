@@ -4,7 +4,6 @@ import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { auth } from "@/lib/auth";
-import { onCheckoutStarted } from "@/lib/loops";
 import { notifyCheckout } from "@/lib/notify";
 
 export async function POST(req: NextRequest) {
@@ -30,8 +29,7 @@ export async function POST(req: NextRequest) {
       metadata: { userId: user.id, plan: "easyclaw" },
     });
 
-    // Fire-and-forget notifications
-    onCheckoutStarted(session.user.email).catch(() => {});
+    // Fire-and-forget notification
     notifyCheckout(session.user.email).catch(() => {});
 
     return NextResponse.json({ url: checkoutSession.url });

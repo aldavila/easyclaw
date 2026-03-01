@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import Stripe from "stripe";
-import { onSubscriptionActive } from "@/lib/loops";
+import { sendPaymentConfirmation } from "@/lib/emails";
 import { notifyPayment } from "@/lib/notify";
 
 export async function POST(req: NextRequest) {
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
         // Notify on successful payment
         const email = session.customer_email || session.customer_details?.email;
         if (email) {
-          onSubscriptionActive(email, plan).catch(() => {});
+          sendPaymentConfirmation(email).catch(() => {});
           notifyPayment(email, plan).catch(() => {});
         }
       }

@@ -5,7 +5,7 @@ import { db } from "./db";
 import { users } from "./db/schema";
 import { eq } from "drizzle-orm";
 import crypto from "crypto";
-import { onUserSignup } from "./loops";
+import { sendWelcomeEmail } from "./emails";
 import { notifyNewUser } from "./notify";
 
 function hashPassword(password: string): string {
@@ -61,7 +61,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
             console.log("[Auth] Created new user:", newUser.email);
             // Fire-and-forget notifications
-            onUserSignup(newUser.email, newUser.name || undefined).catch(() => {});
+            sendWelcomeEmail(newUser.email, newUser.name || undefined).catch(() => {});
             notifyNewUser(newUser.email, newUser.name || undefined).catch(() => {});
             return { id: newUser.id, email: newUser.email, name: newUser.name };
           } else {
