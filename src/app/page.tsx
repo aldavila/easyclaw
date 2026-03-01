@@ -3,6 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 
+function track(label: string) {
+  fetch("/api/track", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ event: "signup_click", page: label }),
+  }).catch(() => {});
+}
+
 const STEPS = [
   { step: "1", title: "Sign Up", desc: "Create your account with Google or email. Takes 10 seconds.", icon: "🔑" },
   { step: "2", title: "Configure", desc: "Pick your AI model, paste your API key, connect Telegram.", icon: "⚙️" },
@@ -57,7 +65,7 @@ export default function Home() {
             <a href="#pricing" className="hover:text-white transition">Pricing</a>
             <a href="#faq" className="hover:text-white transition">FAQ</a>
           </div>
-          <Link href="/api/auth/signin" className="bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-semibold transition">Get Started</Link>
+          <Link href="/api/auth/signin" onClick={() => track("Nav — Get Started")} className="bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-semibold transition">Get Started</Link>
         </div>
       </nav>
 
@@ -76,7 +84,7 @@ export default function Home() {
             One-click OpenClaw deployment. No servers, no SSH, no CLI. Get a personal AI assistant running 24/7 on Telegram.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/api/auth/signin" className="bg-indigo-500 hover:bg-indigo-600 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105 text-center">Deploy Now — $24/mo</Link>
+            <Link href="/api/auth/signin" onClick={() => track("Hero — Deploy Now")} className="bg-indigo-500 hover:bg-indigo-600 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105 text-center">Deploy Now — $24/mo</Link>
             <a href="#features" className="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-8 py-4 rounded-xl text-lg font-semibold transition text-center">See How It Works</a>
           </div>
           <p className="text-sm text-[var(--muted)] mt-4">BYOK — bring your own API key. You control the model and spend.</p>
@@ -184,7 +192,7 @@ export default function Home() {
                 </li>
               ))}
             </ul>
-            <Link href="/api/auth/signin" className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-4 rounded-xl font-semibold transition-all hover:scale-105 text-center block text-lg">Get Started</Link>
+            <Link href="/api/auth/signin" onClick={() => track("Pricing — Get Started")} className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-4 rounded-xl font-semibold transition-all hover:scale-105 text-center block text-lg">Get Started</Link>
             <p className="text-xs text-[var(--muted)] mt-4">LLM API costs are separate (you use your own key). Cancel anytime.</p>
           </div>
         </div>
@@ -241,7 +249,7 @@ export default function Home() {
         <div className="max-w-3xl mx-auto text-center bg-gradient-to-r from-indigo-500/10 to-cyan-500/10 border border-indigo-500/30 rounded-3xl p-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Deploy Your AI Assistant?</h2>
           <p className="text-[var(--muted)] mb-8 max-w-lg mx-auto">Join the OpenClaw revolution. Deploy in 60 seconds. No technical knowledge required.</p>
-          <Link href="/api/auth/signin" className="inline-block bg-indigo-500 hover:bg-indigo-600 text-white px-10 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105">Get Started — $24/mo</Link>
+          <Link href="/api/auth/signin" onClick={() => track("Bottom CTA — Get Started")} className="inline-block bg-indigo-500 hover:bg-indigo-600 text-white px-10 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105">Get Started — $24/mo</Link>
         </div>
       </section>
 
