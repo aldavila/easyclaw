@@ -4,6 +4,8 @@ import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import Stripe from "stripe";
+import { onSubscriptionActive } from "@/lib/loops";
+import { notifyPayment } from "@/lib/notify";
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
@@ -22,6 +24,12 @@ export async function POST(req: NextRequest) {
       const { userId, plan } = session.metadata || {};
       if (userId && plan) {
         await db.update(users).set({ plan, planStatus: "active", stripeSubscriptionId: session.subscription as string, updatedAt: new Date() }).where(eq(users.id, userId));
+        // Notify on successful payment
+        const email = session.customer_email || session.customer_details?.email;
+        if (email) {
+          onSubscriptionActive(email, plan).catch(() => {});
+          notifyPayment(email, plan).catch(() => {});
+        }
       }
       break;
     }
